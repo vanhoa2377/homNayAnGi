@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS2 Food Case Opening - Hôm Nay Ăn Gì?</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at 50% 25%, #1e2638 0%, #0c0f17 100%);
+      color: #e2e8f0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .font-cs {
+      font-family: 'Teko', sans-serif;
+      letter-spacing: 1.5px;
+    }
+    /* Kim chỉ tâm CS2 */
+    .indicator-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      transform: translateX(-50%);
+      background: #fbbf24;
+      box-shadow: 0 0 14px 3px rgba(251, 191, 36, 0.85);
+      z-index: 30;
+      pointer-events: none;
+    }
+    .indicator-triangle-top {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-top: 16px solid #fbbf24;
+      z-index: 31;
+    }
+    .indicator-triangle-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-bottom: 16px solid #fbbf24;
+      z-index: 31;
+    }
+    /* Hiệu ứng tia sáng hòm */
+    .cs-rays {
+      background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.03) 0deg 15deg, transparent 15deg 30deg);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center p-3 md:p-6 overflow-x-hidden">
+
+  <!-- Header -->
+  <header class="text-center mt-2 mb-4">
+    <div class="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 px-3 py-1 rounded-full text-yellow-400 text-xs font-bold tracking-widest uppercase mb-2">
+      <span>★ HỘP TIỆC ẨM THỰC CS2 ★</span>
+    </div>
+    <h1 class="text-4xl md:text-6xl font-cs uppercase font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600 drop-shadow">
+      HÔM NAY ĂN GÌ CASE
+    </h1>
+    <p class="text-xs md:text-sm text-gray-400 max-w-md mx-auto">
+      Hết cảnh bàn lùi, mở hòm ra món gì nhóm chốt đi ăn món đó!
+    </p>
+  </header>
+
+  <!-- Case Spinner Section -->
+  <main class="w-full max-w-5xl my-auto">
+    <div class="relative bg-slate-950/80 border-2 border-slate-700/80 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] backdrop-blur-md">
+      <!-- Kim chỉ tâm -->
+      <div class="indicator-triangle-top"></div>
+      <div class="indicator-line"></div>
+      <div class="indicator-triangle-bottom"></div>
+
+      <!-- Gradient mờ 2 bên tạo độ tụ -->
+      <div class="absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-[#0c0f17] via-[#0c0f17]/80 to-transparent z-20 pointer-events-none"></div>
+      <div class="absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-[#0c0f17] via-[#0c0f17]/80 to-transparent z-20 pointer-events-none"></div>
+
+      <!-- Băng chuyền các ô món ăn -->
+      <div id="spinner-container" class="relative h-64 overflow-hidden cs-rays">
+        <div id="spinner-track" class="flex absolute left-0 top-0 h-full items-center will-change-transform">
+          <!-- Các thẻ món ăn sinh bởi JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Nút Mở Hòm -->
+    <div class="flex flex-col items-center mt-6">
+      <button id="spin-btn" class="relative group px-10 py-4 bg-gradient-to-r from-emerald-600 via-green-500 to-emerald-600 hover:from-emerald-500 hover:to-green-400 text-white font-cs text-3xl font-bold tracking-widest uppercase rounded-lg shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.7)] active:scale-95 transition-all duration-150">
+        <span class="flex items-center gap-3">
+          <svg class="w-7 h-7 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+          </svg>
+          Mở Hòm (Miễn Phí Key)
+        </span>
+      </button>
+      <span id="status-hint" class="text-xs text-gray-400 mt-2 font-medium tracking-wide">
+        Nhấn nút hoặc bấm <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-600 rounded text-yellow-400 text-[11px] font-mono">SPACE</kbd> để quay
+      </span>
+    </div>
+  </main>
+
+  <!-- Danh sách vật phẩm có trong Hòm -->
+  <section class="w-full max-w-5xl mt-8">
+    <div class="flex items-center justify-between border-b border-slate-700/60 pb-2 mb-3">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Danh mục món ăn trong hòm này</h3>
+      <span class="text-xs text-gray-500 font-medium">9 Lựa chọn</span>
+    </div>
+    <div id="case-preview" class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2">
+      <!-- Preview các món sinh bởi JS -->
+    </div>
+  </section>
+
+  <!-- Modal Kết Quả Mở Hòm -->
+  <div id="result-modal" class="fixed inset-0 bg-black/85 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-all duration-300 backdrop-blur-md">
+    <div id="modal-box" class="relative max-w-md w-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 rounded-2xl overflow-hidden shadow-2xl p-6 text-center transform scale-90 transition-all duration-300">
+      
+      <!-- Hào quang màu của món -->
+      <div id="modal-rarity-glow" class="absolute -top-20 left-1/2 -translate-x-1/2 w-48 h-48 rounded-full blur-3xl opacity-40 pointer-events-none"></div>
+
+      <div class="inline-block px-3 py-0.5 rounded text-[11px] font-bold uppercase tracking-widest mb-1 text-white" id="modal-rarity-label">
+        Phẩm cấp
+      </div>
+
+      <h2 id="modal-dish-name" class="text-4xl md:text-5xl font-cs uppercase font-bold text-white tracking-wider my-1">
+        TÊN MÓN ĂN
+      </h2>
+
+      <!-- Khung ảnh món ăn -->
+      <div class="relative w-full h-52 rounded-xl overflow-hidden border border-white/10 my-3 shadow-inner bg-black/50">
+        <img id="modal-dish-img" src="" alt="Món trúng giải" class="w-full h-full object-cover">
+      </div>
+
+      <p id="modal-dish-desc" class="text-xs text-gray-300 italic mb-5 px-2">
+        "Mô tả món ăn hấp dẫn"
+      </p>
+
+      <div class="flex gap-2">
+        <button id="modal-claim-btn" class="flex-1 py-3 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold rounded-lg uppercase tracking-wider text-xs transition shadow-lg shadow-yellow-500/20">
+          Chốt đi ăn món này!
+        </button>
+        <button id="modal-spin-again" class="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-gray-200 font-semibold rounded-lg uppercase tracking-wider text-xs border border-slate-600 transition">
+          Mở Lại Lần Nữa
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1. Danh sách 9 món ăn theo yêu cầu, gắn kèm phẩm cấp CS2
+    const DISHES = [
+      {
+        id: 'bun-cha',
+        name: 'Bún Chả',
+        tier: 'Gold',
+        tierName: '★ Special Rare ★',
+        color: '#ffd700',
+        image: 'https://images.unsplash.com/photo-1503764654157-72da4c2d4a7b?auto=format&fit=crop&w=600&q=80',
+        desc: 'Đỉnh cao ẩm thực nướng than hoa thơm nức mũi, chả giòn kèm nước mắm đu đủ chua ngọt.'
+      },
+      {
+        id: 'bun-bo',
+        name: 'Bún Bò',
+        tier: 'Covert',
+        tierName: 'Covert (Đỏ)',
+        color: '#eb4b4b',
+        image: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
+        desc: 'Nước dùng sa tế sả thơm lừng, thịt bắp bò mềm ngậy kèm chả cua thơm ngon đậm đà.'
+      },
+      {
+        id: 'my-cay',
+        name: 'Mỳ Cay',
+        tier: 'Covert',
+        tierName: 'Covert (Đỏ)',
+        color: '#eb4b4b',
+        image: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=600&q=80',
+        desc: 'Thử thách độ chịu cay với kim chi chua cay bốc khói cùng tôm, xúc xích và mực.'
+      },
+      {
+        id: 'bun-ca',
+        name: 'Bún Cá',
+        tier: 'Classified',
+        tierName: 'Classified (Hồng)',
+        color: '#d32ce6',
+        image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
+        desc: 'Miếng cá rô phi chiên giòn tan, nước dùng dọc mùng thanh chua giải ngấy cực tốt.'
+      },
+      {
+        id: 'com-rang',
+        name: 'Cơm Rang',
+        tier: 'Classified',
+        tierName: 'Classified (Hồng)',
+        color: '#d32ce6',
+        image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80',
+        desc: 'Hạt cơm vàng óng săn giòn, xào dưa chua bò giòn sần sật nóng hổi ấm bụng.'
+      },
+      {
+        id: 'banh-my',
+        name: 'Bánh Mỳ',
+        tier: 'Restricted',
+        tierName: 'Restricted (Tím)',
+        color: '#8847ff',
+        image: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=600&q=80',
+        desc: 'Vỏ giòn rụm, đầy ắp pate thơm béo, trứng ốp la, chả lụa và dưa góp thanh mát.'
+      },
+      {
+        id: 'com-tu-chon',
+        name: 'Cơm Tự Chọn',
+        tier: 'Restricted',
+        tierName: 'Restricted (Tím)',
+        color: '#8847ff',
+        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+        desc: 'Cơm bình dân vỉa hè đa dạng món: thịt kho, sườn xào, đậu phụ sốt cà chua bao no.'
+      },
+      {
+        id: 'xuc-xich',
+        name: 'Xúc Xích',
+        tier: 'Mil-spec',
+        tierName: 'Mil-Spec (Xanh)',
+        color: '#4b69ff',
+        image: 'https://images.unsplash.com/photo-1629814249584-bd4d53cf0e7d?auto=format&fit=crop&w=600&q=80',
+        desc: 'Xúc xích nướng đá rắc ớt bột cay cay, thơm giòn cứu đói cấp tốc.'
+      },
+      {
+        id: 'banh-bao',
+        name: 'Bánh Bao',
+        tier: 'Mil-spec',
+        tierName: 'Mil-Spec (Xanh)',
+        color: '#4b69ff',
+        image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80',
+        desc: 'Bánh bao nóng hổi mềm xốp, bên trong nhân thịt nấm mèo đẫy đà 2 trứng cút.'
+      }
+    ];
+
+    // 2. Bộ giả lập âm thanh CS2 bằng Web Audio API (Hoạt động độc lập không cần file mp3)
+    class CS2AudioSystem {
+      constructor() {
+        this.ctx = null;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      // Tiếng gõ "tách" khi kim lướt qua mép từng món
+      playTick() {
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(580, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.035);
+          gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.035);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.035);
+        } catch(e) {}
+      }
+      // Hợp âm mở hòm thành công
+      playWin() {
+        if (!this.ctx) return;
+        try {
+          const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+          notes.forEach((freq, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            const start = this.ctx.currentTime + (i * 0.1);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, start);
+            gain.gain.setValueAtTime(0.14, start);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.5);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(start);
+            osc.stop(start + 0.55);
+          });
+        } catch(e) {}
+      }
+    }
+
+    const sound = new CS2AudioSystem();
+
+    // 3. Render danh sách các món xem trước (Preview) ở phía dưới
+    const previewContainer = document.getElementById('case-preview');
+    DISHES.forEach(dish => {
+      const el = document.createElement('div');
+      el.className = "bg-slate-900/90 border border-slate-700/60 rounded-lg overflow-hidden flex flex-col items-center p-1.5 text-center shadow";
+      el.innerHTML = `
+        <div class="w-full h-14 rounded overflow-hidden mb-1 bg-black/40">
+          <img src="${dish.image}" alt="${dish.name}" class="w-full h-full object-cover">
+        </div>
+        <div class="text-[11px] font-bold text-gray-200 truncate w-full">${dish.name}</div>
+        <div class="w-full h-1 mt-1.5 rounded-full" style="background-color: ${dish.color}"></div>
+      `;
+      previewContainer.appendChild(el);
+    });
+
+    // 4. Cấu hình chuyển động cuộn Roulette CS2
+    const CARD_WIDTH = 175; // px
+    const CARD_MARGIN = 6;  // px mỗi bên
+    const TOTAL_CARD_WIDTH = CARD_WIDTH + (CARD_MARGIN * 2); // 187px
+    const STRIP_COUNT = 65; // Tổng số ô trên dải quay
+    const TARGET_INDEX = 53; // Ô kết quả nằm ở vị trí thứ 53
+
+    const track = document.getElementById('spinner-track');
+    const container = document.getElementById('spinner-container');
+    const spinBtn = document.getElementById('spin-btn');
+    const statusHint = document.getElementById('status-hint');
+
+    let isSpinning = false;
+    let animFrameId = null;
+
+    // Sinh dải thẻ ngẫu nhiên cho roulette
+    function buildStrip(chosenDish) {
+      track.innerHTML = '';
+      for (let i = 0; i < STRIP_COUNT; i++) {
+        let item = (i === TARGET_INDEX) ? chosenDish : DISHES[Math.floor(Math.random() * DISHES.length)];
+
+        const card = document.createElement('div');
+        card.className = "flex-shrink-0 bg-slate-900/95 border border-slate-700 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg";
+        card.style.width = `${CARD_WIDTH}px`;
+        card.style.height = `215px`;
+        card.style.margin = `0 ${CARD_MARGIN}px`;
+        card.style.borderBottom = `5px solid ${item.color}`;
+
+        card.innerHTML = `
+          <div class="p-2 text-center">
+            <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded text-white/90" style="background:${item.color}33; border: 1px solid ${item.color}88">
+              ${item.tier}
+            </span>
+            <h4 class="font-cs text-2xl font-bold tracking-wide mt-1 truncate text-gray-100">${item.name}</h4>
+          </div>
+          <div class="w-full h-28 px-2 overflow-hidden flex items-center justify-center">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-lg shadow-inner">
+          </div>
+          <div class="w-full h-2" style="background-color: ${item.color}"></div>
+        `;
+        track.appendChild(card);
+      }
+    }
+
+    // Khởi tạo ban đầu
+    buildStrip(DISHES[0]);
+    track.style.transform = `translateX(0px)`;
+
+    // 5. Logic quay hòm
+    function spinCase() {
+      if (isSpinning) return;
+      isSpinning = true;
+      sound.init();
+
+      spinBtn.disabled = true;
+      spinBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      statusHint.textContent = "Hòm đang quay... chuẩn bị mở món!";
+
+      // Chọn món trúng ngẫu nhiên
+      const winnerDish = DISHES[Math.floor(Math.random() * DISHES.length)];
+
+      // Tái tạo lại dải ô với món chiến thắng tại TARGET_INDEX
+      track.style.transition = 'none';
+      track.style.transform = `translateX(0px)`;
+      buildStrip(winnerDish);
+
+      // Buộc trình duyệt tính toán lại layout (reflow)
+      void track.offsetWidth;
+
+      // Tính toán toạ độ dừng: Tâm ô TARGET_INDEX trùng tâm spinner container
+      const containerWidth = container.offsetWidth;
+      const targetCardCenter = (TARGET_INDEX * TOTAL_CARD_WIDTH) + (TOTAL_CARD_WIDTH / 2);
+
+      // Điểm rơi lệch ngẫu nhiên trong thẻ (giống hệt CS2 thực tế)
+      const randomOffset = (Math.random() - 0.5) * (CARD_WIDTH * 0.72);
+      const finalTranslate = -(targetCardCenter - (containerWidth / 2) + randomOffset);
+
+      // Thời gian quay 5.5 giây với hàm gia tốc giảm dần (ease-out) đặc trưng
+      const spinDuration = 5500;
+      track.style.transition = `transform ${spinDuration}ms cubic-bezier(0.12, 0.82, 0.15, 1)`;
+      track.style.transform = `translateX(${finalTranslate}px)`;
+
+      // Theo dõi vị trí kim để phát tiếng cạch cạch
+      let lastIndex = -1;
+      const startTime = performance.now();
+
+      function trackTicks() {
+        const matrix = new WebKitCSSMatrix(window.getComputedStyle(track).transform);
+        const currentX = Math.abs(matrix.m41);
+        const currentCenter = currentX + (containerWidth / 2);
+        const currentIndex = Math.floor(currentCenter / TOTAL_CARD_WIDTH);
+
+        if (currentIndex !== lastIndex && currentIndex >= 0 && currentIndex < STRIP_COUNT) {
+          lastIndex = currentIndex;
+          sound.playTick();
+        }
+
+        if (performance.now() - startTime < spinDuration) {
+          animFrameId = requestAnimationFrame(trackTicks);
+        }
+      }
+      animFrameId = requestAnimationFrame(trackTicks);
+
+      // Khi quay xong -> Mở Modal kết quả
+      setTimeout(() => {
+        cancelAnimationFrame(animFrameId);
+        sound.playWin();
+        openResultModal(winnerDish);
+
+        isSpinning = false;
+        spinBtn.disabled = false;
+        spinBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        statusHint.textContent = "Nhấn nút hoặc bấm SPACE để mở tiếp";
+      }, spinDuration + 350);
+    }
+
+    // 6. Xử lý Modal Kết quả
+    const modal = document.getElementById('result-modal');
+    const modalBox = document.getElementById('modal-box');
+    const modalDishName = document.getElementById('modal-dish-name');
+    const modalDishImg = document.getElementById('modal-dish-img');
+    const modalDishDesc = document.getElementById('modal-dish-desc');
+    const modalRarityLabel = document.getElementById('modal-rarity-label');
+    const modalRarityGlow = document.getElementById('modal-rarity-glow');
+    const modalClaimBtn = document.getElementById('modal-claim-btn');
+    const modalSpinAgain = document.getElementById('modal-spin-again');
+
+    function openResultModal(dish) {
+      modalDishName.textContent = dish.name;
+      modalDishImg.src = dish.image;
+      modalDishDesc.textContent = `"${dish.desc}"`;
+      modalRarityLabel.textContent = dish.tierName;
+      modalRarityLabel.style.backgroundColor = dish.color;
+      modalRarityLabel.style.color = dish.tier === 'Gold' ? '#000' : '#fff';
+
+      modalBox.style.borderColor = dish.color;
+      modalBox.style.boxShadow = `0 0 50px -10px ${dish.color}`;
+      modalRarityGlow.style.backgroundColor = dish.color;
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modalBox.classList.remove('scale-90');
+      modalBox.classList.add('scale-100');
+    }
+
+    function closeModal() {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modalBox.classList.remove('scale-100');
+      modalBox.classList.add('scale-90');
+    }
+
+    // Gán sự kiện
+    spinBtn.addEventListener('click', spinCase);
+    modalClaimBtn.addEventListener('click', closeModal);
+    modalSpinAgain.addEventListener('click', () => {
+      closeModal();
+      setTimeout(spinCase, 300);
+    });
+
+    // Phím tắt SPACE
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && !isSpinning) {
+        e.preventDefault();
+        if (!modal.classList.contains('opacity-0')) {
+          closeModal();
+        } else {
+          spinCase();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
