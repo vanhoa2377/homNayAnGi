@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CS2 Food Case Opening - Hôm Nay Ăn Gì?</title>
+  <title>CS2 Case Opening - Hôm Nay Ăn Gì & Đi Đâu?</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +13,7 @@
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
-      background: radial-gradient(circle at 50% 25%, #1e2638 0%, #0c0f17 100%);
+      background: radial-gradient(circle at 50% 20%, #1a2232 0%, #090c13 100%);
       color: #e2e8f0;
       user-select: none;
       -webkit-user-select: none;
@@ -31,7 +31,7 @@
       width: 4px;
       transform: translateX(-50%);
       background: #fbbf24;
-      box-shadow: 0 0 14px 3px rgba(251, 191, 36, 0.85);
+      box-shadow: 0 0 14px 3px rgba(251, 191, 36, 0.9);
       z-index: 30;
       pointer-events: none;
     }
@@ -59,55 +59,70 @@
       border-bottom: 16px solid #fbbf24;
       z-index: 31;
     }
-    /* Hiệu ứng tia sáng hòm */
     .cs-rays {
-      background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.03) 0deg 15deg, transparent 15deg 30deg);
+      background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.025) 0deg 15deg, transparent 15deg 30deg);
+    }
+    .case-tab.active {
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.25) 0%, rgba(245, 158, 11, 0.05) 100%);
+      border-color: #f59e0b;
+      color: #fbbf24;
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.35);
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between items-center p-3 md:p-6 overflow-x-hidden">
 
   <!-- Header -->
-  <header class="text-center mt-2 mb-4">
-    <div class="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 px-3 py-1 rounded-full text-yellow-400 text-xs font-bold tracking-widest uppercase mb-2">
-      <span>★ HỘP TIỆC ẨM THỰC CS2 ★</span>
+  <header class="text-center mt-2 mb-3">
+    <div id="case-badge" class="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 px-3 py-1 rounded-full text-yellow-400 text-xs font-bold tracking-widest uppercase mb-1">
+      ★ BỮA ĂN NO NÊ WEAPON CASE ★
     </div>
-    <h1 class="text-4xl md:text-6xl font-cs uppercase font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600 drop-shadow">
+    <h1 id="case-title" class="text-4xl md:text-6xl font-cs uppercase font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600 drop-shadow">
       HÔM NAY ĂN GÌ CASE
     </h1>
-    <p class="text-xs md:text-sm text-gray-400 max-w-md mx-auto">
-      Hết cảnh bàn lùi, mở hòm ra món gì nhóm chốt đi ăn món đó!
+    <p id="case-tagline" class="text-xs md:text-sm text-gray-400 max-w-md mx-auto">
+      Mở hòm ra món nào thì chốt đi ăn món đó, cấm bàn lùi!
     </p>
+
+    <!-- Bộ chuyển đổi tabs -->
+    <div class="flex items-center justify-center gap-2 md:gap-3 mt-4">
+      <button class="case-tab active px-4 py-2 bg-slate-900/90 border border-slate-700 rounded-lg text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2" data-case="food">
+        <span>🍜</span> Bữa Ăn
+      </button>
+      <button class="case-tab px-4 py-2 bg-slate-900/90 border border-slate-700 rounded-lg text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2" data-case="drink">
+        <span>🧋</span> Đồ Uống
+      </button>
+      <button class="case-tab px-4 py-2 bg-slate-900/90 border border-slate-700 rounded-lg text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2" data-case="activity">
+        <span>🎯</span> Đi Chơi
+      </button>
+    </div>
   </header>
 
-  <!-- Case Spinner Section -->
+  <!-- Spinner Viewport -->
   <main class="w-full max-w-5xl my-auto">
-    <div class="relative bg-slate-950/80 border-2 border-slate-700/80 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] backdrop-blur-md">
-      <!-- Kim chỉ tâm -->
+    <div class="relative bg-slate-950/85 border-2 border-slate-700/80 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.85)] backdrop-blur-md">
       <div class="indicator-triangle-top"></div>
       <div class="indicator-line"></div>
       <div class="indicator-triangle-bottom"></div>
 
-      <!-- Gradient mờ 2 bên tạo độ tụ -->
-      <div class="absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-[#0c0f17] via-[#0c0f17]/80 to-transparent z-20 pointer-events-none"></div>
-      <div class="absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-[#0c0f17] via-[#0c0f17]/80 to-transparent z-20 pointer-events-none"></div>
+      <!-- Gradient 2 bên tạo chiều sâu -->
+      <div class="absolute inset-y-0 left-0 w-24 md:w-32 bg-gradient-to-r from-[#090c13] via-[#090c13]/85 to-transparent z-20 pointer-events-none"></div>
+      <div class="absolute inset-y-0 right-0 w-24 md:w-32 bg-gradient-to-l from-[#090c13] via-[#090c13]/85 to-transparent z-20 pointer-events-none"></div>
 
-      <!-- Băng chuyền các ô món ăn -->
+      <!-- Dải cuộn Roulette -->
       <div id="spinner-container" class="relative h-64 overflow-hidden cs-rays">
-        <div id="spinner-track" class="flex absolute left-0 top-0 h-full items-center will-change-transform">
-          <!-- Các thẻ món ăn sinh bởi JavaScript -->
-        </div>
+        <div id="spinner-track" class="flex absolute left-0 top-0 h-full items-center will-change-transform"></div>
       </div>
     </div>
 
-    <!-- Nút Mở Hòm -->
-    <div class="flex flex-col items-center mt-6">
+    <!-- Nút quay mở hòm -->
+    <div class="flex flex-col items-center mt-5">
       <button id="spin-btn" class="relative group px-10 py-4 bg-gradient-to-r from-emerald-600 via-green-500 to-emerald-600 hover:from-emerald-500 hover:to-green-400 text-white font-cs text-3xl font-bold tracking-widest uppercase rounded-lg shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.7)] active:scale-95 transition-all duration-150">
         <span class="flex items-center gap-3">
           <svg class="w-7 h-7 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
           </svg>
-          Mở Hòm (Miễn Phí Key)
+          Ăn Gì Đâyyy
         </span>
       </button>
       <span id="status-hint" class="text-xs text-gray-400 mt-2 font-medium tracking-wide">
@@ -116,22 +131,18 @@
     </div>
   </main>
 
-  <!-- Danh sách vật phẩm có trong Hòm -->
-  <section class="w-full max-w-5xl mt-8">
+  <!-- Xem trước danh mục vật phẩm trong hòm -->
+  <section class="w-full max-w-5xl mt-6">
     <div class="flex items-center justify-between border-b border-slate-700/60 pb-2 mb-3">
-      <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Danh mục món ăn trong hòm này</h3>
-      <span class="text-xs text-gray-500 font-medium">9 Lựa chọn</span>
+      <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Danh mục lựa chọn trong hòm này</h3>
+      <span id="case-count" class="text-xs text-gray-500 font-medium">15 Lựa chọn</span>
     </div>
-    <div id="case-preview" class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2">
-      <!-- Preview các món sinh bởi JS -->
-    </div>
+    <div id="case-preview" class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2"></div>
   </section>
 
   <!-- Modal Kết Quả Mở Hòm -->
   <div id="result-modal" class="fixed inset-0 bg-black/85 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-all duration-300 backdrop-blur-md">
     <div id="modal-box" class="relative max-w-md w-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 rounded-2xl overflow-hidden shadow-2xl p-6 text-center transform scale-90 transition-all duration-300">
-      
-      <!-- Hào quang màu của món -->
       <div id="modal-rarity-glow" class="absolute -top-20 left-1/2 -translate-x-1/2 w-48 h-48 rounded-full blur-3xl opacity-40 pointer-events-none"></div>
 
       <div class="inline-block px-3 py-0.5 rounded text-[11px] font-bold uppercase tracking-widest mb-1 text-white" id="modal-rarity-label">
@@ -139,21 +150,20 @@
       </div>
 
       <h2 id="modal-dish-name" class="text-4xl md:text-5xl font-cs uppercase font-bold text-white tracking-wider my-1">
-        TÊN MÓN ĂN
+        TÊN LỰA CHỌN
       </h2>
 
-      <!-- Khung ảnh món ăn -->
       <div class="relative w-full h-52 rounded-xl overflow-hidden border border-white/10 my-3 shadow-inner bg-black/50">
-        <img id="modal-dish-img" src="" alt="Món trúng giải" class="w-full h-full object-cover">
+        <img id="modal-dish-img" src="" alt="Kết quả trúng" class="w-full h-full object-cover">
       </div>
 
       <p id="modal-dish-desc" class="text-xs text-gray-300 italic mb-5 px-2">
-        "Mô tả món ăn hấp dẫn"
+        "Mô tả"
       </p>
 
       <div class="flex gap-2">
         <button id="modal-claim-btn" class="flex-1 py-3 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold rounded-lg uppercase tracking-wider text-xs transition shadow-lg shadow-yellow-500/20">
-          Chốt đi ăn món này!
+          Chốt lựa chọn này!
         </button>
         <button id="modal-spin-again" class="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-gray-200 font-semibold rounded-lg uppercase tracking-wider text-xs border border-slate-600 transition">
           Mở Lại Lần Nữa
@@ -163,93 +173,282 @@
   </div>
 
   <script>
-    // 1. Danh sách 9 món ăn theo yêu cầu, gắn kèm phẩm cấp CS2
-    const DISHES = [
-      {
-        id: 'bun-cha',
-        name: 'Bún Chả',
-        tier: 'Gold',
-        tierName: '★ Special Rare ★',
-        color: '#ffd700',
-        image: 'https://images.unsplash.com/photo-1503764654157-72da4c2d4a7b?auto=format&fit=crop&w=600&q=80',
-        desc: 'Đỉnh cao ẩm thực nướng than hoa thơm nức mũi, chả giòn kèm nước mắm đu đủ chua ngọt.'
+    // 1. Dữ liệu Case với 15 món ăn mới và hình ảnh minh họa cụ thể
+    const CASE_DATA = {
+      food: {
+        badge: '★ 15 MÓN ĂN ★',
+        title: 'FOOD',
+        tagline: 'Mở hòm trúng món gì chốt đi ăn món đó, cấm bàn lùi!',
+        items: [
+          {
+            name: 'Phở Bò',
+            tier: 'Gold',
+            tierName: '★ Special Rare ★',
+            color: '#ffd700',
+            image: 'https://images.unsplash.com/photo-1576577445504-6af96477db52?auto=format&fit=crop&w=600&q=80',
+            desc: 'Quốc hồn quốc túy! Nước dùng ninh xương thơm phức quế hồi, lát thịt bò tái chín mềm tan.'
+          },
+          {
+            name: 'Bún Chả',
+            tier: 'Gold',
+            tierName: '★ Special Rare ★',
+            color: '#ffd700',
+            // Thay đường link bên dưới:
+            image: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80',
+            desc: 'Thịt nướng xém cạnh than hoa thơm nức mũi, chả viên đậm đà chấm cùng nước mắm chua ngọt.'
+          },
+          {
+            name: 'Bún Bò',
+            tier: 'Covert',
+            tierName: 'Covert (Đỏ)',
+            color: '#eb4b4b',
+            image: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
+            desc: 'Nước dùng sa tế sả thơm cay nồng nàn, ngập tràn bắp bò hoa và chả cua béo ngậy.'
+          },
+          {
+            name: 'Nem Nướng Nha Trang',
+            tier: 'Covert',
+            tierName: 'Covert (Đỏ)',
+            color: '#eb4b4b',
+            image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=600&q=80',
+            desc: 'Nem nướng vàng ruộm cuộn bánh tráng, ram giòn rụm và nước chấm tương gan béo ngậy.'
+          },
+          {
+            name: 'Mỳ Cay',
+            tier: 'Covert',
+            tierName: 'Covert (Đỏ)',
+            color: '#eb4b4b',
+            image: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=600&q=80',
+            desc: 'Thử thách độ chịu cay xé lưỡi với hải sản, bò Mỹ bốc khói nghi ngút trong thố đá.'
+          },
+          {
+            name: 'Cơm Gà',
+            tier: 'Classified',
+            tierName: 'Classified (Hồng)',
+            color: '#d32ce6',
+            image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80',
+            desc: 'Hạt cơm vàng óng nấu nước luộc gà, thịt gà xé hoặc chiên mắm giòn da thơm phức.'
+          },
+          {
+            name: 'Bánh Đa Cua',
+            tier: 'Classified',
+            tierName: 'Classified (Hồng)',
+            color: '#d32ce6',
+            image: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80',
+            desc: 'Sợi bánh đa đỏ dai mềm, gạch cua béo ngậy, chả lá lốt thơm lừng đặc sản đất Cảng.'
+          },
+          {
+            name: 'Bún Riêu',
+            tier: 'Classified',
+            tierName: 'Classified (Hồng)',
+            color: '#d32ce6',
+            image: 'https://images.unsplash.com/photo-1594998893017-36147cbcae05?auto=format&fit=crop&w=600&q=80',
+            desc: 'Nước dùng cà chua giấm bỗng chua dịu thanh mát, gạch cua xốp mềm và đậu phụ rán giòn.'
+          },
+          {
+            name: 'Bún Cá',
+            tier: 'Classified',
+            tierName: 'Classified (Hồng)',
+            color: '#d32ce6',
+            image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
+            desc: 'Từng miếng cá chiên vàng rụm giòn tan, kèm dọc mùng thanh mát giải ngấy tuyệt hảo.'
+          },
+          {
+            name: 'Bánh Cuốn',
+            tier: 'Restricted',
+            tierName: 'Restricted (Tím)',
+            color: '#8847ff',
+            image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80',
+            desc: 'Bánh tráng mỏng mịn nóng hổi, ngập nhân thịt băm mộc nhĩ, rắc hành phi thơm nức mũi.'
+          },
+          {
+            name: 'Cơm Rang',
+            tier: 'Restricted',
+            tierName: 'Restricted (Tím)',
+            color: '#8847ff',
+            image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80',
+            desc: 'Hạt cơm săn giòn vàng ruộm, kết hợp dưa chua giòn sần sật và thịt bò xào lửa lớn.'
+          },
+          {
+            name: 'Bánh Mì',
+            tier: 'Restricted',
+            tierName: 'Restricted (Tím)',
+            color: '#8847ff',
+            image: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=600&q=80',
+            desc: 'Vỏ giòn rụm bên trong ngập tràn pate béo ngậy, trứng ốp la, chả lụa và dưa góp thanh mát.'
+          },
+          {
+            name: 'Xôi',
+            tier: 'Mil-spec',
+            tierName: 'Mil-Spec (Xanh)',
+            color: '#4b69ff',
+            image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80',
+            desc: 'Xôi xéo mỡ hành hành phi hoặc xôi thịt kho trứng cút dẻo thơm, no lâu cả buổi.'
+          },
+          {
+            name: 'Cháo',
+            tier: 'Mil-spec',
+            tierName: 'Mil-Spec (Xanh)',
+            color: '#4b69ff',
+            image: 'https://images.unsplash.com/photo-1547496502-affa22d38842?auto=format&fit=crop&w=600&q=80',
+            desc: 'Tô cháo sườn, cháo trai nóng hổi rắc tiêu bắc, ớt bột và quẩy giòn tan ấm bụng.'
+          },
+          {
+            name: 'Cơm Tự Chọn',
+            tier: 'Mil-spec',
+            tierName: 'Mil-Spec (Xanh)',
+            color: '#4b69ff',
+            image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+            desc: 'Cơm bình dân vỉa hè đa dạng món: thịt kho tàu, sườn chua ngọt, đậu nhồi thịt bao no.'
+          }
+        ]
       },
-      {
-        id: 'bun-bo',
-        name: 'Bún Bò',
-        tier: 'Covert',
-        tierName: 'Covert (Đỏ)',
-        color: '#eb4b4b',
-        image: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
-        desc: 'Nước dùng sa tế sả thơm lừng, thịt bắp bò mềm ngậy kèm chả cua thơm ngon đậm đà.'
+      drink: {
+        badge: '★ GIẢI KHÁT ★',
+        title: 'WATER',
+        tagline: 'Trà sữa ngọt béo hay cà phê tỉnh táo? Hãy để hòm quyết định!',
+        items: [
+          {
+            name: 'Trà Sữa',
+            tier: 'Gold',
+            tierName: '★ Special Rare ★',
+            color: '#ffd700',
+            image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80',
+            desc: 'Full topping trân châu dẻo quánh, vị ngọt béo ngập tràn năng lượng hạnh phúc.'
+          },
+          {
+            name: 'Cafe',
+            tier: 'Covert',
+            tierName: 'Covert (Đỏ)',
+            color: '#eb4b4b',
+            image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
+            desc: 'Cà phê phin sữa đá hoặc nâu lắc đậm đà, vị đắng quyến rũ đánh thức mọi giác quan.'
+          },
+          {
+            name: 'Kem',
+            tier: 'Restricted',
+            tierName: 'Restricted (Tím)',
+            color: '#8847ff',
+            image: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=600&q=80',
+            desc: 'Kem ốc quế mát lạnh ngọt ngào, tan ngay trên đầu lưỡi giúp giải nhiệt sảng khoái.'
+          },
+          {
+            name: 'Matcha Latte',
+            tier: 'Covert',
+            tierName: 'Covert (Đỏ)',
+            color: '#eb4b4b',
+            image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=600&q=80',
+            desc: 'Hương trà xanh thơm ngát béo nhẹ hòa quyện với sữa tươi mịn màng mát lạnh.'
+          },
+          {
+            name: 'Chè',
+            tier: 'Classified',
+            tierName: 'Classified (Hồng)',
+            color: '#d32ce6',
+            image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80',
+            desc: 'Chè bưởi, chè thái sầu riêng hay chè thập cẩm cốt dừa ngọt lịm thơm phức.'
+          },
+          {
+            name: 'Nước Ép Hoa Quả',
+            tier: 'Classified',
+            tierName: 'Classified (Hồng)',
+            color: '#d32ce6',
+            image: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=600&q=80',
+            desc: 'Nước ép cam, ổi, dưa hấu nguyên chất thơm ngon, bổ sung vitamin mát lành cho cơ thể.'
+          },
+          {
+            name: 'Trà Chanh',
+            tier: 'Restricted',
+            tierName: 'Restricted (Tím)',
+            color: '#8847ff',
+            image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80',
+            desc: 'Cốc trà chanh chua ngọt mát lạnh vỉa hè, combo hoàn hảo cùng đĩa hướng dương chém gió.'
+          },
+          {
+            name: 'Nước Mía',
+            tier: 'Mil-spec',
+            tierName: 'Mil-Spec (Xanh)',
+            color: '#4b69ff',
+            image: 'https://images.unsplash.com/photo-1589733955941-5eeaf752f6dd?auto=format&fit=crop&w=600&q=80',
+            desc: 'Nước mía ép tươi cùng quất thơm lừng, nhiều đá ngọt thanh đập tan cơn khát tức thì.'
+          },
+          {
+            name: 'Trà Đá',
+            tier: 'Mil-spec',
+            tierName: 'Mil-Spec (Xanh)',
+            color: '#4b69ff',
+            image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&w=600&q=80',
+            desc: 'Món nước quốc dân giải nhiệt mọi góc phố, mát lạnh sảng khoái và đậm chất hè.'
+          }
+        ]
       },
-      {
-        id: 'my-cay',
-        name: 'Mỳ Cay',
-        tier: 'Covert',
-        tierName: 'Covert (Đỏ)',
-        color: '#eb4b4b',
-        image: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=600&q=80',
-        desc: 'Thử thách độ chịu cay với kim chi chua cay bốc khói cùng tôm, xúc xích và mực.'
-      },
-      {
-        id: 'bun-ca',
-        name: 'Bún Cá',
-        tier: 'Classified',
-        tierName: 'Classified (Hồng)',
-        color: '#d32ce6',
-        image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80',
-        desc: 'Miếng cá rô phi chiên giòn tan, nước dùng dọc mùng thanh chua giải ngấy cực tốt.'
-      },
-      {
-        id: 'com-rang',
-        name: 'Cơm Rang',
-        tier: 'Classified',
-        tierName: 'Classified (Hồng)',
-        color: '#d32ce6',
-        image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80',
-        desc: 'Hạt cơm vàng óng săn giòn, xào dưa chua bò giòn sần sật nóng hổi ấm bụng.'
-      },
-      {
-        id: 'banh-my',
-        name: 'Bánh Mỳ',
-        tier: 'Restricted',
-        tierName: 'Restricted (Tím)',
-        color: '#8847ff',
-        image: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=600&q=80',
-        desc: 'Vỏ giòn rụm, đầy ắp pate thơm béo, trứng ốp la, chả lụa và dưa góp thanh mát.'
-      },
-      {
-        id: 'com-tu-chon',
-        name: 'Cơm Tự Chọn',
-        tier: 'Restricted',
-        tierName: 'Restricted (Tím)',
-        color: '#8847ff',
-        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
-        desc: 'Cơm bình dân vỉa hè đa dạng món: thịt kho, sườn xào, đậu phụ sốt cà chua bao no.'
-      },
-      {
-        id: 'xuc-xich',
-        name: 'Xúc Xích',
-        tier: 'Mil-spec',
-        tierName: 'Mil-Spec (Xanh)',
-        color: '#4b69ff',
-        image: 'https://images.unsplash.com/photo-1629814249584-bd4d53cf0e7d?auto=format&fit=crop&w=600&q=80',
-        desc: 'Xúc xích nướng đá rắc ớt bột cay cay, thơm giòn cứu đói cấp tốc.'
-      },
-      {
-        id: 'banh-bao',
-        name: 'Bánh Bao',
-        tier: 'Mil-spec',
-        tierName: 'Mil-Spec (Xanh)',
-        color: '#4b69ff',
-        image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80',
-        desc: 'Bánh bao nóng hổi mềm xốp, bên trong nhân thịt nấm mèo đẫy đà 2 trứng cút.'
+      activity: {
+        badge: '★ HOẠT ĐỘNG VUI CHƠI ★',
+        title: 'TRAVELING',
+        tagline: 'Ăn uống xong rồi thì đi đâu giải trí? Mở hòm để có câu trả lời!',
+        items: [
+          {
+            name: 'Quán Net',
+            tier: 'Gold',
+            tierName: '★ Special Rare ★',
+            color: '#ffd700',
+            image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80',
+            desc: 'Dàn máy 240Hz cấu hình khủng, quẩy CS2, Valorant cùng hội anh em thâu đêm.'
+          },
+          {
+            name: 'Xem Phim',
+            tier: 'Covert',
+            tierName: 'Covert (Đỏ)',
+            color: '#eb4b4b',
+            image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80',
+            desc: 'Bắp rang bơ giòn rụm, ly nước ngọt mát lạnh và thưởng thức những bộ phim bom tấn đỉnh cao.'
+          },
+          {
+            name: 'Music Box',
+            tier: 'Covert',
+            tierName: 'Covert (Đỏ)',
+            color: '#eb4b4b',
+            image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80',
+            desc: 'Hát hò xả stress trong phòng karaoke mini riêng tư, quẩy bung nóc cùng list nhạc tủ.'
+          },
+          {
+            name: 'Dạo TTTM',
+            tier: 'Classified',
+            tierName: 'Classified (Hồng)',
+            color: '#d32ce6',
+            image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?auto=format&fit=crop&w=600&q=80',
+            desc: 'Điều hòa mát rượi, dạo quanh mua sắm, check-in sống ảo và ngắm phố xá lung linh.'
+          },
+          {
+            name: 'Board Game Cafe',
+            tier: 'Classified',
+            tierName: 'Classified (Hồng)',
+            color: '#d32ce6',
+            image: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=600&q=80',
+            desc: 'Đấu trí căng thẳng, lừa lọc nhau cười nghiêng ngả với Ma Sói, Uno, Mèo Nổ cùng ly trà mát.'
+          },
+          {
+            name: 'Lượn Vi Vu',
+            tier: 'Restricted',
+            tierName: 'Restricted (Tím)',
+            color: '#8847ff',
+            image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80',
+            desc: 'Xách xe lượn phố hóng gió đêm mát rượi, ngắm cảnh phố phường không lo kẹt xe.'
+          },
+          {
+            name: 'Tô Tượng',
+            tier: 'Mil-spec',
+            tierName: 'Mil-Spec (Xanh)',
+            color: '#4b69ff',
+            image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&q=80',
+            desc: 'Rèn luyện tính kiên nhẫn, trổ tài họa sĩ pha màu và xả stress cực hiệu quả.'
+          }
+        ]
       }
-    ];
+    };
 
-    // 2. Bộ giả lập âm thanh CS2 bằng Web Audio API (Hoạt động độc lập không cần file mp3)
-    class CS2AudioSystem {
+    // 2. Bộ âm thanh CS2 độc lập bằng Web Audio API
+    class CS2AudioEngine {
       constructor() {
         this.ctx = null;
       }
@@ -262,15 +461,14 @@
           this.ctx.resume();
         }
       }
-      // Tiếng gõ "tách" khi kim lướt qua mép từng món
       playTick() {
         if (!this.ctx) return;
         try {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'triangle';
-          osc.frequency.setValueAtTime(580, this.ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.035);
+          osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(130, this.ctx.currentTime + 0.035);
           gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.035);
           osc.connect(gain);
@@ -279,11 +477,10 @@
           osc.stop(this.ctx.currentTime + 0.035);
         } catch(e) {}
       }
-      // Hợp âm mở hòm thành công
       playWin() {
         if (!this.ctx) return;
         try {
-          const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+          const notes = [261.63, 329.63, 392.00, 523.25];
           notes.forEach((freq, i) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
@@ -301,43 +498,57 @@
       }
     }
 
-    const sound = new CS2AudioSystem();
+    const sound = new CS2AudioEngine();
 
-    // 3. Render danh sách các món xem trước (Preview) ở phía dưới
+    // 3. Quản lý trạng thái
+    let currentCategory = 'food';
+    let isSpinning = false;
+    let animFrameId = null;
+
+    const CARD_WIDTH = 175;
+    const CARD_MARGIN = 6;
+    const TOTAL_CARD_WIDTH = CARD_WIDTH + (CARD_MARGIN * 2);
+    const STRIP_COUNT = 65;
+    const TARGET_INDEX = 53;
+
+    const caseBadge = document.getElementById('case-badge');
+    const caseTitle = document.getElementById('case-title');
+    const caseTagline = document.getElementById('case-tagline');
+    const caseCount = document.getElementById('case-count');
     const previewContainer = document.getElementById('case-preview');
-    DISHES.forEach(dish => {
-      const el = document.createElement('div');
-      el.className = "bg-slate-900/90 border border-slate-700/60 rounded-lg overflow-hidden flex flex-col items-center p-1.5 text-center shadow";
-      el.innerHTML = `
-        <div class="w-full h-14 rounded overflow-hidden mb-1 bg-black/40">
-          <img src="${dish.image}" alt="${dish.name}" class="w-full h-full object-cover">
-        </div>
-        <div class="text-[11px] font-bold text-gray-200 truncate w-full">${dish.name}</div>
-        <div class="w-full h-1 mt-1.5 rounded-full" style="background-color: ${dish.color}"></div>
-      `;
-      previewContainer.appendChild(el);
-    });
-
-    // 4. Cấu hình chuyển động cuộn Roulette CS2
-    const CARD_WIDTH = 175; // px
-    const CARD_MARGIN = 6;  // px mỗi bên
-    const TOTAL_CARD_WIDTH = CARD_WIDTH + (CARD_MARGIN * 2); // 187px
-    const STRIP_COUNT = 65; // Tổng số ô trên dải quay
-    const TARGET_INDEX = 53; // Ô kết quả nằm ở vị trí thứ 53
-
     const track = document.getElementById('spinner-track');
     const container = document.getElementById('spinner-container');
     const spinBtn = document.getElementById('spin-btn');
     const statusHint = document.getElementById('status-hint');
+    const tabButtons = document.querySelectorAll('.case-tab');
 
-    let isSpinning = false;
-    let animFrameId = null;
+    // 4. Render danh sách Preview
+    function renderPreview() {
+      const items = CASE_DATA[currentCategory].items;
+      previewContainer.innerHTML = '';
+      caseCount.textContent = `${items.length} Lựa chọn`;
 
-    // Sinh dải thẻ ngẫu nhiên cho roulette
-    function buildStrip(chosenDish) {
+      items.forEach(item => {
+        const el = document.createElement('div');
+        el.className = "bg-slate-900/90 border border-slate-700/60 rounded-lg overflow-hidden flex flex-col items-center p-1.5 text-center shadow";
+        el.innerHTML = `
+          <div class="w-full h-14 rounded overflow-hidden mb-1 bg-black/40">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+          </div>
+          <div class="text-[11px] font-bold text-gray-200 truncate w-full">${item.name}</div>
+          <div class="w-full h-1 mt-1.5 rounded-full" style="background-color: ${item.color}"></div>
+        `;
+        previewContainer.appendChild(el);
+      });
+    }
+
+    // 5. Sinh dải thẻ trên Roulette
+    function buildStrip(winnerItem) {
+      const items = CASE_DATA[currentCategory].items;
       track.innerHTML = '';
+
       for (let i = 0; i < STRIP_COUNT; i++) {
-        let item = (i === TARGET_INDEX) ? chosenDish : DISHES[Math.floor(Math.random() * DISHES.length)];
+        let item = (i === TARGET_INDEX) ? winnerItem : items[Math.floor(Math.random() * items.length)];
 
         const card = document.createElement('div');
         card.className = "flex-shrink-0 bg-slate-900/95 border border-slate-700 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg";
@@ -362,11 +573,38 @@
       }
     }
 
-    // Khởi tạo ban đầu
-    buildStrip(DISHES[0]);
-    track.style.transform = `translateX(0px)`;
+    // 6. Chuyển đổi Category
+    function switchCategory(cat) {
+      if (isSpinning || currentCategory === cat) return;
+      currentCategory = cat;
 
-    // 5. Logic quay hòm
+      tabButtons.forEach(btn => {
+        if (btn.dataset.case === cat) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      const curData = CASE_DATA[currentCategory];
+      caseBadge.textContent = curData.badge;
+      caseTitle.textContent = curData.title;
+      caseTagline.textContent = curData.tagline;
+
+      renderPreview();
+      track.style.transition = 'none';
+      track.style.transform = `translateX(0px)`;
+      buildStrip(curData.items[0]);
+    }
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => switchCategory(btn.dataset.case));
+    });
+
+    renderPreview();
+    buildStrip(CASE_DATA[currentCategory].items[0]);
+
+    // 7. Logic quay Roulette CS2
     function spinCase() {
       if (isSpinning) return;
       isSpinning = true;
@@ -374,33 +612,27 @@
 
       spinBtn.disabled = true;
       spinBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      statusHint.textContent = "Hòm đang quay... chuẩn bị mở món!";
+      tabButtons.forEach(b => b.classList.add('pointer-events-none', 'opacity-60'));
+      statusHint.textContent = "Hòm đang quay... hãy xem vũ trụ chọn gì!";
 
-      // Chọn món trúng ngẫu nhiên
-      const winnerDish = DISHES[Math.floor(Math.random() * DISHES.length)];
+      const items = CASE_DATA[currentCategory].items;
+      const winner = items[Math.floor(Math.random() * items.length)];
 
-      // Tái tạo lại dải ô với món chiến thắng tại TARGET_INDEX
       track.style.transition = 'none';
       track.style.transform = `translateX(0px)`;
-      buildStrip(winnerDish);
+      buildStrip(winner);
 
-      // Buộc trình duyệt tính toán lại layout (reflow)
       void track.offsetWidth;
 
-      // Tính toán toạ độ dừng: Tâm ô TARGET_INDEX trùng tâm spinner container
       const containerWidth = container.offsetWidth;
       const targetCardCenter = (TARGET_INDEX * TOTAL_CARD_WIDTH) + (TOTAL_CARD_WIDTH / 2);
-
-      // Điểm rơi lệch ngẫu nhiên trong thẻ (giống hệt CS2 thực tế)
       const randomOffset = (Math.random() - 0.5) * (CARD_WIDTH * 0.72);
       const finalTranslate = -(targetCardCenter - (containerWidth / 2) + randomOffset);
 
-      // Thời gian quay 5.5 giây với hàm gia tốc giảm dần (ease-out) đặc trưng
       const spinDuration = 5500;
       track.style.transition = `transform ${spinDuration}ms cubic-bezier(0.12, 0.82, 0.15, 1)`;
       track.style.transform = `translateX(${finalTranslate}px)`;
 
-      // Theo dõi vị trí kim để phát tiếng cạch cạch
       let lastIndex = -1;
       const startTime = performance.now();
 
@@ -421,20 +653,20 @@
       }
       animFrameId = requestAnimationFrame(trackTicks);
 
-      // Khi quay xong -> Mở Modal kết quả
       setTimeout(() => {
         cancelAnimationFrame(animFrameId);
         sound.playWin();
-        openResultModal(winnerDish);
+        openResultModal(winner);
 
         isSpinning = false;
         spinBtn.disabled = false;
         spinBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        tabButtons.forEach(b => b.classList.remove('pointer-events-none', 'opacity-60'));
         statusHint.textContent = "Nhấn nút hoặc bấm SPACE để mở tiếp";
       }, spinDuration + 350);
     }
 
-    // 6. Xử lý Modal Kết quả
+    // 8. Modal Kết quả
     const modal = document.getElementById('result-modal');
     const modalBox = document.getElementById('modal-box');
     const modalDishName = document.getElementById('modal-dish-name');
@@ -445,17 +677,17 @@
     const modalClaimBtn = document.getElementById('modal-claim-btn');
     const modalSpinAgain = document.getElementById('modal-spin-again');
 
-    function openResultModal(dish) {
-      modalDishName.textContent = dish.name;
-      modalDishImg.src = dish.image;
-      modalDishDesc.textContent = `"${dish.desc}"`;
-      modalRarityLabel.textContent = dish.tierName;
-      modalRarityLabel.style.backgroundColor = dish.color;
-      modalRarityLabel.style.color = dish.tier === 'Gold' ? '#000' : '#fff';
+    function openResultModal(item) {
+      modalDishName.textContent = item.name;
+      modalDishImg.src = item.image;
+      modalDishDesc.textContent = `"${item.desc}"`;
+      modalRarityLabel.textContent = item.tierName;
+      modalRarityLabel.style.backgroundColor = item.color;
+      modalRarityLabel.style.color = item.tier === 'Gold' ? '#000' : '#fff';
 
-      modalBox.style.borderColor = dish.color;
-      modalBox.style.boxShadow = `0 0 50px -10px ${dish.color}`;
-      modalRarityGlow.style.backgroundColor = dish.color;
+      modalBox.style.borderColor = item.color;
+      modalBox.style.boxShadow = `0 0 50px -10px ${item.color}`;
+      modalRarityGlow.style.backgroundColor = item.color;
 
       modal.classList.remove('opacity-0', 'pointer-events-none');
       modalBox.classList.remove('scale-90');
@@ -468,7 +700,6 @@
       modalBox.classList.add('scale-90');
     }
 
-    // Gán sự kiện
     spinBtn.addEventListener('click', spinCase);
     modalClaimBtn.addEventListener('click', closeModal);
     modalSpinAgain.addEventListener('click', () => {
@@ -476,7 +707,6 @@
       setTimeout(spinCase, 300);
     });
 
-    // Phím tắt SPACE
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space' && !isSpinning) {
         e.preventDefault();
